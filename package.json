@@ -1,0 +1,25 @@
+{
+  "name": "yunjian-aigc-library",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "type": "module",
+  "description": "Hania 的个人 AIGC 编导知识库 · 云间来信",
+  "scripts": {
+    "dev": "vitepress dev docs --host 127.0.0.1",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs --host 127.0.0.1",
+    "check": "node scripts/check-content.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "note": "node scripts/new-note.mjs",
+    "verify": "pnpm run check && pnpm test && pnpm run build"
+  },
+  "dependencies": {
+    "gray-matter": "4.0.3",
+    "markdown-it": "14.1.0",
+    "minisearch": "7.2.0",
+    "vitepress": "1.6.4",
+    "vue": "^3.5.13"
+  },
+  "engines": { "node": ">=20.19.0" }
+}

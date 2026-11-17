@@ -1,0 +1,61 @@
+# Push Markdown or theme changes to main to rebuild and publish the site.
+name: Publish Hania knowledge library
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Read Pages URL
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Validate notes and links
+        run: pnpm check
+      - name: Test search and note organization
+        run: pnpm test
+      - name: Build website at the actual Pages path
+        # configure-pages returns /repository for a project site and an empty
+        # base_path for a user site or custom domain. Both need a trailing /.
+        run: pnpm build
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}/
+      - name: Upload generated website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,1 @@
+<template><div class="read-lead"><div class="read-lead-text"><slot /></div><span class="read-lead-visual" aria-hidden="true"><span class="read-art-haze"></span><span class="read-art-sheet"></span><span class="read-art-quotes"><b></b><b></b></span><span class="read-art-cloud"></span></span></div></template>

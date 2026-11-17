@@ -1,0 +1,3 @@
+# Vite uses esbuild's platform binary. No other dependency install scripts run.
+allowBuilds:
+  esbuild: true
